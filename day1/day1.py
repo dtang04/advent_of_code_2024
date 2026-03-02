@@ -26,7 +26,7 @@ def main():
             l_e = int(left_lst[i])
             dists.append(abs(r_e - l_e))
         print(sum(dists)) #Part 1: 1222801
-        print(get_similarity_score(left_lst, right_lst))
+        print(get_similarity_score(left_lst, right_lst)) #Part 2: 22545250
 
 if __name__ == "__main__":
     main()
