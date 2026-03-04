@@ -1,8 +1,8 @@
-def findXs(board):
+def findCenters(board, ch):
     X_pos = []
     for i,row in enumerate(board):
         for j,c in enumerate(row):
-            if c == "X":
+            if c == ch:
                 X_pos.append((i,j))
     return X_pos
 
@@ -67,16 +67,37 @@ def findNeighboringXMAS(board, pos_X):
             ctr += 1
     return ctr
 
+def isX_MAS(board, pos_M):
+    pos_x, pos_y = pos_M
+    #Up Diagonal:
+    if pos_x + 1 < len(board) and pos_x - 1 >= 0 and pos_y - 1 >= 0 and pos_y + 1 < len(board[pos_x]):
+        up_right = []
+        down_right = []
+        for i in range(1,-2,-1):
+            up_right += board[pos_x+i][pos_y-i]
+            down_right += board[pos_x-i][pos_y-i]
+        up_left = down_right[::-1]
+        down_left = up_right[::-1]
+        if ("".join(up_right) == "MAS" or "".join(down_left) == "MAS") and ("".join(down_right) == "MAS" or "".join(up_left) == "MAS"):
+            return True
+        return False
+    
+
 def main():
     board = []
     part1_total = 0
+    part2_total = 0
     with open("day4.txt", "r") as f:
         for line in f:
             board.append(list(line.strip()))
-        xs = findXs(board)
+        xs = findCenters(board, "X")
         for x in xs:
             part1_total += findNeighboringXMAS(board, x)
+        ms = findCenters(board, "A")
+        for m in ms:
+            if isX_MAS(board, m):
+                part2_total += 1
         print(part1_total) #Part 1: 2547
-
+        print(part2_total) #Part 2: 1939
 if __name__ == "__main__":
     main()
