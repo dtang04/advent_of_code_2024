@@ -97,7 +97,7 @@ def main():
         for l in f:
             board.append(list(l.strip()))
         start = findStart(board)
-        print(iterate(board, start, 'u'))
+        print(iterate(board, start, 'u')) #Part 1: 4559
 
         count_inf = 0
         for i,_ in enumerate(board):
@@ -111,7 +111,7 @@ def main():
                 if status:
                     count_inf += 1
                 board[i][j] = '.'
-        print(count_inf)
+        print(count_inf) #Part 2: 1604
 
 if __name__ == "__main__":
     main()
