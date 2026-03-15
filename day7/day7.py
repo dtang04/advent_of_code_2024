@@ -41,8 +41,8 @@ def main():
             status_2 = canReachTargetwithConcat(nums[1:], target, nums[0])
             if status_2:
                 part2_count += target
-    print(part1_count)
-    print(part2_count)
+    print(part1_count) #Part 1: 21572148763543
+    print(part2_count) #Part 2: 581941094529163
 
 
 
