@@ -33,6 +33,30 @@ def _determineAntinodes(board, piece):
                 antinodes.add(a)
     return antinodes
 
+def _determineAntinodesTFreq(board, piece):
+    antinodes = set()
+    pos = getPosPieces(board, piece)
+    for i in range(len(pos)):
+        for j in range(i+1, len(pos)):
+            pos_x1, pos_y1 = pos[i] # A
+            pos_x2, pos_y2 = pos[j] # B
+            dx = pos_x2 - pos_x1 # difference vector (dx, dy)
+            dy = pos_y2 - pos_y1
+
+            current_a = pos[i]
+            antinodes.add(current_a)
+
+            while current_a[0] - dx >= 0 and current_a[0] - dx < len(board) and current_a[1] - dy >= 0 and current_a[1] - dy < len(board[0]):
+                current_a = (current_a[0] - dx, current_a[1] - dy)
+                antinodes.add(current_a)
+
+            current_a = pos[i]
+
+            while current_a[0] + dx >= 0 and current_a[0] + dx < len(board) and current_a[1] + dy >= 0 and current_a[1] + dy < len(board[0]):
+                current_a = (current_a[0] + dx, current_a[1] + dy)
+                antinodes.add(current_a)
+    return antinodes
+
 def getPosPieces(board, piece):
     pos = []
     for i,row in enumerate(board):
