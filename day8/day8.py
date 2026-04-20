@@ -73,8 +73,8 @@ def main():
     with open("day8.txt", "r") as f:
         for l in f:
             board.append(list(l.strip()))
-    print(len(determineAntinodes(board))) # Part 1
-    print(len(determineAntinodesTFreq(board))) # Part 2
+    print(len(determineAntinodes(board))) # Part 1: 348
+    print(len(determineAntinodesTFreq(board))) # Part 2: 1221
 
 if __name__ == "__main__":
     main()
