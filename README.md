@@ -5,3 +5,5 @@
 * Each directory only has the source code, and not the puzzle inputs.
 * To run a file, simply use `python <filename.py>`.
 * Most solutions should not require importing external Python libraries.
+
+*Starting from day 9, reflection md files are added*
