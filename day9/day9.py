@@ -86,7 +86,7 @@ def main():
         sorted_files = organize(files[:], num_digs)
         print(checksum(sorted_files, num_digs)) #Part 1: 6258319840548
         sorted_block_files = organize_block(files)
-        print(checksum_block(sorted_block_files))
+        print(checksum_block(sorted_block_files)) #Part 2: 6286182965311
 
 
 if __name__ == "__main__":
