@@ -42,6 +42,9 @@ def organize(files, num_digs):
     return files
 
 def organize_block(files):
+    """
+    Part 2
+    """
     current_key = max(freqMap.keys())
     while current_key >= 0:
         next_empty = files.index('.')
@@ -63,6 +66,9 @@ def organize_block(files):
     return files
 
 def checksum(sorted_files, num_digs):
+    """
+    Part 1 checksum
+    """
     chk = 0
     digs = sorted_files[0:num_digs]
     for i,c_num in enumerate(digs):
@@ -70,6 +76,9 @@ def checksum(sorted_files, num_digs):
     return chk
 
 def checksum_block(sorted_files):
+    """
+    Part 2 checksum
+    """
     chk = 0
     for i,c in enumerate(sorted_files):
         if c == ".":
