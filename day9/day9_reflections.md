@@ -18,8 +18,9 @@ AAA........BBBBB
 
 This means that for each subsequent file (assuming we read from right to left) must consider every possible empty space until the (pointer >= the beginning of the filesystem).
 
-A faster algorithm for part 2 would be:
+### A faster algorithm
 
+A faster algorithm for part 2 would be:
 
 Store each file as (start, length, id)
 Store each free span as (start, length)
@@ -31,7 +32,9 @@ Then, for each file in descending ID:
 * Then, move the file by updating spans, shrinking or removing the processed gap
 * Add a new gap where the file used to be
 
-
+### Focus points
+* Off-by-one indexing errors
+* Thinking about the problem as an interval tracking problem can make the problem easier to think about
 
 
 
