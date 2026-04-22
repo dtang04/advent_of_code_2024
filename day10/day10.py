@@ -12,7 +12,7 @@ def findStarts():
 
 def ascendBF():
     """
-    Count only unique paths with a unique start-end path combination
+    Count only paths with a unique start-end path combination
     """
     ctr = 0
     queue = findStarts()
