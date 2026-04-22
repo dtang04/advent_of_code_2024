@@ -11,6 +11,9 @@ def findStarts():
     return pos
 
 def ascendBF():
+    """
+    Count only unique paths with a unique start-end path combination
+    """
     ctr = 0
     queue = findStarts()
     while len(queue) > 0:
@@ -34,6 +37,9 @@ def ascendBF():
     return ctr
 
 def ascendBFRating():
+    """
+    Count all unique paths from 0 to 9
+    """
     ctr = 0
     queue = findStarts()
     while len(queue) > 0:
