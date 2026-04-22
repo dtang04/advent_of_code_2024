@@ -1,3 +1,5 @@
+from functools import lru_cache
+
 def blink(seq):
     ret = []
     for i,st in enumerate(seq):
@@ -9,16 +11,37 @@ def blink(seq):
         else:
             ret.append(str(int(st) * 2024))
     return ret
-        
+
 def blink25(seq):
     for i in range(25):
         seq = blink(seq)
     return seq
-        
+
+@lru_cache(maxsize=None)
+def blink_p2(num, blinks):
+    num_stones = 0
+    if blinks == 0:
+        return 1
+    if num == "0":
+        num_stones += blink_p2("1", blinks - 1)
+    elif len(num) % 2 == 0:
+        num_stones += blink_p2(str(int(num[0:len(num)//2])), blinks - 1)
+        num_stones += blink_p2(str(int(num[len(num)//2:])), blinks - 1)
+    else:
+        num_stones += blink_p2(str(int(num) * 2024), blinks - 1)
+    return num_stones
+    
+def blink75(seq):
+    tot = 0
+    for st in seq:
+        tot += blink_p2(st, 75)
+    return tot
+
 def main():
     with open("day11.txt") as f:
         seq = f.readline().strip().split(" ")
-    print(len(blink25(seq)))
+    print(len(blink25(seq))) # Day 1: 188902
+    print(blink75(seq)) # Day 2: 223894720281135
 
 if __name__ == "__main__":
     main()
