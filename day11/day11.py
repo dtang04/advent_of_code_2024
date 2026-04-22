@@ -1,8 +1,11 @@
 from functools import lru_cache
 
 def blink(seq):
+    """
+    Simulate each the list state after each blink
+    """
     ret = []
-    for i,st in enumerate(seq):
+    for st in seq:
         if st == "0":
             ret.append("1")
         elif len(st) % 2 == 0:
@@ -19,6 +22,9 @@ def blink25(seq):
 
 @lru_cache(maxsize=None)
 def blink_p2(num, blinks):
+    """
+    Use memoization and calculate the number the number of stones with k blinks remaining.
+    """
     num_stones = 0
     if blinks == 0:
         return 1
