@@ -30,3 +30,6 @@ satisfying $a_1Y_1 + a_2Y_2 = P_2$.
 
 In our implementation, we approached this via brute force checking all possible $a_1, a_2$ pairs.
 
+### Focus Points
+* System of Equations
+* Numpy
