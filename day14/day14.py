@@ -1,6 +1,7 @@
 # Globals
 l_x = 101
 l_y = 103
+NUM_SIMULATIONS = l_x * l_y
 
 def simulate_move(robots_st, l_x, l_y):
     robots_end = {}
@@ -62,6 +63,46 @@ def sum_robots_quad(robots, l_x, l_y):
 
     return sum_q1 * sum_q2 * sum_q3 * sum_q4
 
+def determine_long_row(robots):
+    row_threshold = 10
+   
+    # Search for a long row > row_threshold
+    for y in range(l_y):
+        count_cons_row = 0
+        for x in range(l_x):
+            if (x,y) in robots:
+                count_cons_row += 1
+            else:
+                count_cons_row = 0
+            if count_cons_row > row_threshold:
+                return True
+    return False
+
+def display(robots):
+    ret = []
+    for x in range(l_x):
+        loc = []
+        for y in range(l_y):
+            if (x,y) not in robots:
+                loc.append(".")
+            else:
+                loc.append("#")
+        ret.append(loc)
+
+    for j in range(l_y):
+        for i in range(l_x):
+            print(ret[i][j], end = "")
+        print()
+
+def find_egg(robots, l_x, l_y):
+    for i in range(1,NUM_SIMULATIONS+1):
+        robots = simulate_move(robots, l_x, l_y)
+        if determine_long_row(robots):
+            print("________________")
+            display(robots)
+            print("Simulation # ", i)
+    return robots
+
 def main():
     robots_pos = {}
     with open("day14.txt", "r") as f:
@@ -88,6 +129,9 @@ def main():
         
     end_pos = simulate_n(100, robots_pos, l_x, l_y)
     print(sum_robots_quad(end_pos, l_x, l_y)) # Part 1: 219512160
+    
+    find_egg(robots_pos, l_x, l_y) # Part 2: 6398
+
 
 if __name__ == "__main__":
     main()
