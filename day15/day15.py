@@ -148,7 +148,7 @@ def main():
         BOARD_HEIGHT = j
 
     process_inst(start)
-    print(compute_res())
+    print(compute_res()) # Part 1: 1414416
 
 if __name__ == "__main__":
     main()
