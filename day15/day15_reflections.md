@@ -38,6 +38,8 @@ While this seems intuitive, there were several things that made implementing som
 2. Each box's representation was overly complicated in my implementation: I stored a box as `box = (box_l_x, box_l_y), (box_r_x, box_r_y))`
 3. Have to consider all four directions (though `^` and `v` were similar, and so were `>` and `<`).
 
+Also, storing the board state (walls, boxes) as globals was intuitive at first, but I had to use `global` to do assignment in the function.
+
 ### Focus Points
 * Recursion and dependency trees
 * 2-D Lists

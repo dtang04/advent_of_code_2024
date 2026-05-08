@@ -443,7 +443,5 @@ def main():
     process_inst_p2(start_p2)
     print(compute_res_p2()) # Part 2: 1386070
 
-
-
 if __name__ == "__main__":
     main()
