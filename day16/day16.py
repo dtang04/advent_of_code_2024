@@ -11,7 +11,7 @@ def bfs(start, end):
     """
     Part 1
 
-    A working but inefficient solutiokn to part 1. Appends to the queue in an arbitrary order, meaning
+    A working but inefficient solution to part 1. Appends to the queue in an arbitrary order, meaning
     that expensive paths can be processed before cheaper paths, wasting compute.
 
     Must explore all possible paths that end at 'E' without early returning.
@@ -125,11 +125,9 @@ def bfs_heapq(start, end):
 def find_best_paths(start, end):
     """
     Part 2
-    
+
     For each heapq push, append the next destination of the path onto the trail set.
-
     Then, for all paths that reach pos == end with the same min_score, add it to the candidate trails list.
-
     Lastly, aggregate elements with union.
     """
     global min_score
