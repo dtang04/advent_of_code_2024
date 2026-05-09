@@ -62,7 +62,7 @@ def main():
                 if t == 'E':
                     end = (row, col)
             row += 1
-    print(bfs(start, end))
+    print(bfs(start, end)) # Part 1: 98416
 
 if __name__ == "__main__":
     main()
