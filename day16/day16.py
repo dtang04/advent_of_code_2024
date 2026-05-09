@@ -123,6 +123,13 @@ def bfs_heapq(start, end):
     return -1
 
 def find_best_paths(start, end):
+    """
+    For each heapq push, append the next destination of the path onto the trail set.
+
+    Then, for all paths that reach pos == end with the same min_score, add it to the candidate trails list.
+
+    Lastly, aggregate elements with union.
+    """
     global min_score
     global epoch
 
