@@ -1,6 +1,16 @@
+import heapq
+
 walls = []
 
 def bfs(start, end):
+    """
+    Part 1
+
+    A working but inefficient solutiokn to part 1. Appends to the queue in an arbitrary order, meaning
+    that expensive paths can be processed before cheaper paths, wasting compute.
+
+    Must explore all possible paths that end at 'E' without early returning.
+    """
     queue = [start] # Tuples of ((row, col), cur_direction, cur_score)
 
     visited = {} # of type (pos, d)
@@ -47,6 +57,66 @@ def bfs(start, end):
             candidates.append(score)
     return min(candidates)
              
+def bfs_heapq(start, end):
+    """
+    Part 1
+
+    An optimization to the above bfs function, using priority queue (via min-heap)
+    rather than just appending naively to the queue.
+
+    Since the first element of the min queue is guaranteed to be the current path with the lowest score,
+    heapq ensures orderly processing of paths from lowest score to highest, rather than wasting compute on
+    processing paths with high scores.
+
+    Because heapq maintains a global ordering by score, we can also early return the moment when pos == end (here
+    we are assuming non-negative score increments, which is the case).
+    """
+    pq = [start] # Tuples of (cur_score, (row, col), current_direction) since heapq sorts by first tuple element
+                 # pq is a min heap
+
+    visited = {}
+    while len(pq) > 0:
+        score, pos, d = heapq.heappop(pq)
+
+        if pos == end: # the min element in the heap has bubbled up to the front, and its at the end 'E'
+            return score
+
+        if (pos, d) in visited: # min-heap guarantees that the first element is the path with the lowest score
+            continue
+        
+        visited[(pos, d)] = score
+        pos_x, pos_y = pos
+
+        if d == 'U':
+            if (pos_x-1, pos_y) not in walls:
+               heapq.heappush(pq, (score+1, (pos_x-1, pos_y), 'U'))
+            
+            heapq.heappush(pq, (score+1000, (pos_x, pos_y), 'R'))
+            heapq.heappush(pq, (score+1000, (pos_x, pos_y), 'L'))
+        
+        elif d == 'D':
+            if (pos_x+1, pos_y) not in walls:
+                heapq.heappush(pq, (score+1, (pos_x+1, pos_y), 'D'))
+                
+            heapq.heappush(pq, (score+1000, (pos_x, pos_y), 'R'))
+            heapq.heappush(pq, (score+1000, (pos_x, pos_y), 'L'))
+    
+        elif d == 'L':
+            if (pos_x, pos_y-1) not in walls:
+                heapq.heappush(pq, (score+1, (pos_x, pos_y-1), 'L'))
+
+            heapq.heappush(pq, (score+1000, (pos_x, pos_y), 'U'))
+            heapq.heappush(pq, (score+1000, (pos_x, pos_y), 'D'))
+        
+        else:
+            if (pos_x, pos_y+1) not in walls:
+                heapq.heappush(pq, (score+1, (pos_x, pos_y+1), 'R'))
+            
+            heapq.heappush(pq, (score+1000, (pos_x, pos_y), 'U'))
+            heapq.heappush(pq, (score+1000, (pos_x, pos_y), 'D'))
+
+    return -1
+    
 def main():
     row = 0
     start = None
@@ -59,10 +129,14 @@ def main():
                     walls.append((row,col))
                 if t == 'S':
                     start = ((row, col), 'E', 0)
+                    start_pq = (0, (row, col), 'E')
                 if t == 'E':
                     end = (row, col)
             row += 1
-    print(bfs(start, end)) # Part 1: 98416
+
+    print(bfs_heapq(start_pq, end)) # Part 1: 98416
+
+
 
 if __name__ == "__main__":
     main()
