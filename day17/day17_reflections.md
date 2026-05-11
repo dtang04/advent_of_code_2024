@@ -63,7 +63,7 @@ while reg_A != 0:
     out.append(octal_bit)
     reg_A // 8
 ```
-Recall that this pattern exists when trying to recover a binary represntation from decimal. Given an integer `k`, `k % 2` islates the last bit, and `k / 2` strips the last bit off from the aggregate.
+Recall that this pattern exists when trying to recover a binary represntation from decimal. Given an integer `k`, `k % 2` isolates the last bit, and `k / 2` strips the last bit off from the aggregate.
 
 Thus, the above code is the same thing, but for base-8 (octal).
 
