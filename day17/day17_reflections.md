@@ -63,6 +63,10 @@ while reg_A != 0:
     out.append(octal_bit)
     reg_A // 8
 ```
+Recall that this pattern exists when trying to recover a binary represntation from decimal. Given an integer `k`, `k % 2` islates the last bit, and `k / 2` strips the last bit off from the aggregate.
+
+Thus, the above code is the same thing, but for base-8 (octal).
+
 So, this leads us to two observations:
 1. For every loop, we strip off an octal bit from reg_A. Since `out == inst`, each element in `inst` must be responsible for a loop of the instruction.
 2. In every loop, we output a value from 0-7 into out. We combine this with (1), where it follows that each element in
