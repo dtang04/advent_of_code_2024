@@ -28,14 +28,14 @@ Another subtlety comes when inserting `trail` as a tuple element in the queue. `
 ```
 heapq.heappush(pq, (score+1000, (pos_x, pos_y), 'R', epoch, trail))
 ```
-One visited check also subtly changes. Now, it is possible for a later path to have a `(pos, d)` with the same score, and we should not early continue in this case. So, our continue becomes:
+pushes a reference to the priority queue rather than creating a new copy. This is problematic because there may be diverging branches modifying the same set in memory. So, for every insert, we need to create a copy of the trail beforehand.
+
+Our visited check also subtly changes. Now, it is possible for a later path to have a `(pos, d)` with the same score, and we should not early continue in this case. So, our continue becomes:
 
 ```
 if (pos, d) in visited and score > visited[(pos, d)]:
     continue
 ```
-
-pushes a reference to the priority queue rather than creating a new copy. This is problematic because there may be diverging branches modifying the same set in memory. So, for every insert, we need to create a copy of the trail beforehand.
 
 ### Focus Points
 * Priority Queue via `heapq`

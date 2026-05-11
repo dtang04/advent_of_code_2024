@@ -6,12 +6,18 @@ reg_C = 0
 
 inst_ptr = 0
 
+#------------Globals------------
 insts = []
 
 outputs = [] # Outputs produced by out inst
 
-def process():
-    global inst_ptr
+def process(num_to_try=None):
+    global inst_ptr, reg_A, reg_B, reg_C
+
+    if num_to_try != None:
+        reg_A = num_to_try
+        reg_B = 0
+        reg_C = 0
 
     while inst_ptr < len(insts):
         isJump = False
@@ -41,6 +47,25 @@ def process():
 
         if not isJump: # if jnz produced a jump, don't increment the inst_ptr
             inst_ptr += 2
+
+    inst_ptr = 0 # for part 2, reset the inst_ptr for next candidate process
+
+def findSmallestCandidate():
+    global outputs
+    candidates = [0]
+    for next_ind in range(len(insts)-1, -1, -1): # next digit to parse in output (high -> low)
+        next_candidates = []
+        to_match = insts[next_ind:]
+        for i,c in enumerate(candidates):
+            for next_dig in range(8): # try all 8 possibilities for the next digit
+                num_to_try = (c << 3) + next_dig
+                process(num_to_try)
+                if outputs == to_match:
+                    next_candidates.append(num_to_try)
+                outputs = [] # reset output for the next candidate process
+        candidates = next_candidates
+    return min(candidates)
+
 
 def writeTo(operand):
     if operand == 7:
@@ -128,7 +153,7 @@ def out(operand):
     elif val == 'C':
         val = reg_C
     
-    outputs.append(str(val % 8))
+    outputs.append(val % 8)
 
 # Opcode 6
 def bdv(operand):
@@ -172,9 +197,12 @@ def cdv(operand):
 
     reg_C = num // denom
 
+def recreate():
+    candidates = []
+
     
 def main():
-    global reg_A, reg_B, reg_C
+    global reg_A, reg_B, reg_C, outputs
     line_br = False
     with open("day17.txt", 'r') as f:
         for l in f:
@@ -200,8 +228,15 @@ def main():
     
     process()
 
-    print(",".join(outputs)) # Part 1: 2,0,4,2,7,0,1,0,3
+    outputs_str = []
+    for out in outputs:
+        outputs_str.append(str(out))
 
+    print(",".join(outputs_str)) # Part 1: 2,0,4,2,7,0,1,0,3
+
+    outputs = []
+
+    print(findSmallestCandidate()) # Part 2: 265601188299675
 
 if __name__ == "__main__":
     main()
