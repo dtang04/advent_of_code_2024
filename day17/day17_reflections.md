@@ -66,11 +66,11 @@ while reg_A != 0:
 So, this leads us to two observations:
 1. For every loop, we strip off an octal bit from reg_A. Since `out == inst`, each element in `inst` must be responsible for a loop of the instruction.
 2. In every loop, we output a value from 0-7 into out. We combine this with (1), where it follows that each element in
-`inst` must correspond to an output. 
+`inst` must correspond to an output.
 
-We could then brute-force the right answer by building a `candidates` list, and at some index `k` in the instructions list, the intermediate out log we want to match is (`inst[k:]`). Then, for the candidates from the previous iteration, we consider all possible octal bit values to append to the candidate (0-8). If `process(candidate + digit_i)`matches the log from `inst[k:]`, onwards, we keep it in the candidate list. Otherwise, discard.
+We could then brute-force the right answer by building a `candidates` list, and at some index `k` in the instructions list, the intermediate out log we want to match is (`inst[k:]`). Then, for the candidates from the previous iteration, we consider all possible octal bit values to append to the candidate (0-8). If `process(candidate + digit_i)`matches the log from `inst[k:]`, onwards, we keep it in the candidate list. Otherwise, we discard the candidate from the candidate list.
 
-We treat `process` as the black box. We don't need to reverse-engineer its instructions, we just know that it will just produce `output` of the above pseudocode and preserve the 1-1 relationship between instruction log and output log.
+We treat `process` as the black box. We don't need to reverse-engineer its instructions, we just know that it will just produce `output` of the above pseudocode and preserve the 1:1 relationship between instruction log and output log.
 
 So, we have the following:
 
