@@ -1,4 +1,4 @@
-## Day 16 (AoC 2024)
+## Day 17 (AoC 2024)
 
 ## Part 1
 
@@ -58,7 +58,8 @@ So, we can simplify the instructions further to the following:
 ```
 init reg_A
 while reg_A != 0:
-    # run ops here...
+    # run ops here... get reg_B
+    octal_bit = reg_B % 8
     out.append(octal_bit)
     reg_A // 8
 ```
@@ -68,6 +69,8 @@ So, this leads us to two observations:
 `inst` must correspond to an output. 
 
 We could then brute-force the right answer by building a `candidates` list, and at some index `k` in the instructions list, the intermediate out log we want to match is (`inst[k:]`). Then, for the candidates from the previous iteration, we consider all possible octal bit values to append to the candidate (0-8). If `process(candidate + digit_i)`matches the log from `inst[k:]`, onwards, we keep it in the candidate list. Otherwise, discard.
+
+We treat `process` as the black box. We don't need to reverse-engineer its instructions, we just know that it will just produce `output` of the above pseudocode.
 
 So, we have the following:
 
