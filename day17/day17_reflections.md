@@ -24,7 +24,7 @@ adv j
 jnz k
 ```
 
-However, this alone isnt enough to narrow down the invariant, as j is a *combo operand*. If `j == 5` (register B),
+However, this alone isnt enough to narrow down the invariant, as j is a combo operand. If `j == 5` (register B),
 for example, that would be problematic because then we'd have to check how B changes.
 
 Luckily, looking closely at the instructions, we have that one of the instructions is `0 3`. This is `adv 8`.
@@ -34,7 +34,7 @@ This is good, but it would again be problematic if there were also instructions 
 
 Again, however, looking at the test case we have the sequence of instructions:
 
-2,4,1,7,7,5,1,7,*0,3*,4,1,5,5,3,0
+2,4,1,7,7,5,1,7,0,3,4,1,5,5,3,0
 
 Decoding these instructions we have:
 
@@ -49,7 +49,7 @@ Decoding these instructions we have:
 3,0 -> jnz 0      # jump to 0 if A != 0
 ```
 
-So, the only time A is modified is 0,3. This simplifies things a lot, because we now know the loop condition.
+So, the only time A is modified is `0,3`. This simplifies things a lot, because we now know the loop condition.
 
 But even better, the output line `5,5` is `B % 8`. This means that every entry in out represents on octal bit, and can only be from 0-7.
     * This makes sense, because recall that operands also must be from 0-7. If we want out to match the instrucitons, then each element in out also must be 0-7.
@@ -70,16 +70,16 @@ So, this leads us to two observations:
 
 We could then brute-force the right answer by building a `candidates` list, and at some index `k` in the instructions list, the intermediate out log we want to match is (`inst[k:]`). Then, for the candidates from the previous iteration, we consider all possible octal bit values to append to the candidate (0-8). If `process(candidate + digit_i)`matches the log from `inst[k:]`, onwards, we keep it in the candidate list. Otherwise, discard.
 
-We treat `process` as the black box. We don't need to reverse-engineer its instructions, we just know that it will just produce `output` of the above pseudocode.
+We treat `process` as the black box. We don't need to reverse-engineer its instructions, we just know that it will just produce `output` of the above pseudocode and preserve the 1-1 relationship between instruction log and output log.
 
 So, we have the following:
 
 ```
-   for next_ind in range(len(insts)-1, -1, -1): # next digit to parse in output (high -> low)
+   for next_ind in range(len(insts)-1, -1, -1): # next digit to parse in instructions (high -> low)
         next_candidates = []
         to_match = insts[next_ind:]
         for i,c in enumerate(candidates):
-            for next_dig in range(8): # try all 8 possibilities for the next digit
+            for next_dig in range(8): # try all 8 possibilities for the next digit, using the 1:1 relationship
                 num_to_try = (c << 3) + next_dig
                 process(num_to_try)
                 if outputs == to_match:
