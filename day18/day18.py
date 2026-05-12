@@ -1,4 +1,5 @@
 from termcolor import colored # Used for displaying the trail in a different color
+import copy
 
 # Globals
 GRID_WIDTH = 71
@@ -68,6 +69,9 @@ def bfs():
                 trail_loc.append(d_n)
 
                 queue.append((cur_x+1, cur_y, trail_loc))
+    
+    # No valid path exists
+    return (-1, -1, [])
 
 def main():
     global grid
@@ -84,23 +88,47 @@ def main():
             fallen += 1
 
     pos_x, pos_y, trail = bfs()
-    drawTrail(trail)
-    displayGrid()
-    print(len(trail))
+    grid_loc = drawTrail(trail)
+    displayGrid(grid_loc)
+
+    print(len(trail)) # Part 1: 288
+
+    # Part 2:
+    with open("day18.txt", 'r') as f:
+        for l in f:
+            l = l.strip().split(',')
+            x = int(l[1])
+            y = int(l[0])
+            grid[x][y] = '#'
+
+            pos_x, pos_y, trail = bfs()
+            if pos_x == -1 and pos_y == -1:
+                print(str(y) + "," + str(x)) # Part 2: 52,5
+                break
+            fallen += 1
 
 def drawTrail(trail):
+    """
+    Deepcopies the grid, then adds the trail.
+    """
+    grid_loc = copy.deepcopy(grid)
     for x,y in trail:
-        grid[x][y] = 'O'
+        grid_loc[x][y] = 'O'
 
-    grid[0][0] = 'O'
+    grid_loc[0][0] = 'O'
 
-def displayGrid():
-    for i,_ in enumerate(grid):
-        for j,_ in enumerate(grid[i]):
-            if grid[i][j] == 'O':
+    return grid_loc
+
+def displayGrid(grid_loc):
+    """
+    Displays the grid.
+    """
+    for i,_ in enumerate(grid_loc):
+        for j,_ in enumerate(grid_loc[i]):
+            if grid_loc[i][j] == 'O':
                 print(colored('O', "red"), end = "")
             else:
-                print(grid[i][j], end = "")
+                print(grid_loc[i][j], end = "")
         print()
 
 if __name__ == "__main__":
