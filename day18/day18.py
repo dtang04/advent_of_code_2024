@@ -8,7 +8,6 @@ NUM_SIM = 1024
 
 grid = []
 
-
 def populateGrid():
     for _ in range(GRID_WIDTH):
         row = ['.'] * GRID_LENGTH
@@ -105,7 +104,6 @@ def main():
             if pos_x == -1 and pos_y == -1:
                 print(str(y) + "," + str(x)) # Part 2: 52,5
                 break
-            fallen += 1
 
 def drawTrail(trail):
     """
