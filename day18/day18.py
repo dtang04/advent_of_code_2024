@@ -1,3 +1,4 @@
+from termcolor import colored # Used for displaying the trail in a different color
 
 # Globals
 GRID_WIDTH = 71
@@ -96,7 +97,10 @@ def drawTrail(trail):
 def displayGrid():
     for i,_ in enumerate(grid):
         for j,_ in enumerate(grid[i]):
-            print(grid[i][j], end = "")
+            if grid[i][j] == 'O':
+                print(colored('O', "red"), end = "")
+            else:
+                print(grid[i][j], end = "")
         print()
 
 if __name__ == "__main__":
