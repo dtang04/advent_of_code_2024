@@ -35,7 +35,7 @@ def main():
             if status:
                 ctr += 1
     
-    print(ctr)
+    print(ctr) # Part 1: 327
 
 if __name__ == "__main__":
     main()
