@@ -4,9 +4,12 @@ END = None
 
 BOARD_LENGTH = 0
 BOARD_WIDTH = 0
+TIME_DUR = 20
 
 walls = []
+
 cheats = {}
+cheats_p2 = {}
 
 path = {}
 
@@ -65,9 +68,28 @@ def findCheats():
                 time_saved = path[c] - (elapsed + 2)
                 cheats[(p, c)] = time_saved
 
+def findCheats_20ps():
+    for p1,elapsed_1 in path.items():
+        for p2,elapsed_2 in path.items():
+            if p1 == p2:
+                continue
+            p1_x, p1_y = p1
+            p2_x, p2_y = p2
+            m_dist = abs(p1_x - p2_x) + abs(p1_y - p2_y) # calculate the manhattan distance
+            if m_dist <= 20:
+                time_saved = path[p2] - (elapsed_1 + m_dist)
+                cheats_p2[(p1, p2)] = time_saved
+            
 def filterCheats():
     ctr = 0
     for cheat, time_saved in cheats.items():
+        if time_saved >= 100:
+            ctr += 1
+    return ctr
+
+def filterCheats_p2():
+    ctr = 0
+    for cheat, time_saved in cheats_p2.items():
         if time_saved >= 100:
             ctr += 1
     return ctr
@@ -97,6 +119,10 @@ def main():
     trace_with_time()
     findCheats()
     print(filterCheats()) # Part 1: 1355
+    findCheats_20ps()
+    print(filterCheats_p2()) # Part 2: 1007335
+
+
 
 if __name__ == "__main__":
     main()
