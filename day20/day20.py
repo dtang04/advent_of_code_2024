@@ -82,7 +82,7 @@ def findCheats_20ps():
             p1_x, p1_y = p1
             p2_x, p2_y = p2
             m_dist = abs(p1_x - p2_x) + abs(p1_y - p2_y) # calculate the manhattan distance
-            if m_dist <= 20:
+            if m_dist <= TIME_DUR:
                 time_saved = path[p2] - (elapsed_1 + m_dist)
                 if time_saved < 0: # p2 is an earlier point in the maze than p1
                     continue
