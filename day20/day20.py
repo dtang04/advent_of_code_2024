@@ -175,7 +175,6 @@ def trace_with_time():
             path[candidate] = time_elapsed
             continue
 
-
 def findCheats():
     for p,elapsed in path.items():
         cur_x, cur_y = p
