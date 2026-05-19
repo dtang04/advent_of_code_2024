@@ -49,7 +49,6 @@ def trace():
     
     return time_elapsed
 
-
 def traverse():
     """
     Solve the race, with cheats.
@@ -57,13 +56,13 @@ def traverse():
     queue = [(START, 0, 2, False, False, {START})] # cur_pos, time_elapsed, cheat_active_duration, cheat_activated, cheat_used, trail
                                    # we separate cheat_active_duration and cheat-used
                                    # cheat of 2 picoseconds means A -> W -> B is allowed
-    
-    visited = set()
 
     while len(queue) != 0:
         current = queue.pop()
 
         cur_pos, time_elapsed, cheat_active_duration, cheat_activated, cheat_used, trail = current
+
+        print(cur_pos, cheat_activated)
 
         if cur_pos == END:
             cheats.append(time_elapsed)
@@ -78,57 +77,48 @@ def traverse():
         cur_x, cur_y = cur_pos
 
         candidate = (cur_x, cur_y-1)
-        if cur_y-1 >= 0 and candidate not in trail:
-            if candidate in walls and cheat_used:
-                continue
+        if candidate not in walls or not cheat_used:
+            if cur_y-1 >= 0 and candidate not in trail:
+                loc_trail = trail.copy()
+                loc_trail.add(candidate)
 
-            loc_trail = trail.copy()
-            loc_trail.add(candidate)
-
-            if candidate in walls or cheat_activated: # cheat_activated = True can be set if the next move is a wall, or activated in a previous cycle
-                queue.append((candidate, time_elapsed+1, cheat_active_duration-1, True, cheat_used, loc_trail))
-            else:
-                queue.append((candidate, time_elapsed+1, cheat_active_duration, cheat_activated, cheat_used, loc_trail))
+                if candidate in walls or cheat_activated: # cheat_activated = True can be set if the next move is a wall, or activated in a previous cycle
+                    queue.append((candidate, time_elapsed+1, cheat_active_duration-1, True, cheat_used, loc_trail))
+                else:
+                    queue.append((candidate, time_elapsed+1, cheat_active_duration, cheat_activated, cheat_used, loc_trail))
         
         candidate = (cur_x, cur_y+1)
-        if cur_y+1 < BOARD_LENGTH and candidate not in trail:
-            if candidate in walls and cheat_used:
-                continue
+        if candidate not in walls or not cheat_used:
+            if cur_y+1 < BOARD_LENGTH and candidate not in trail:
+                loc_trail = trail.copy()
+                loc_trail.add(candidate)
 
-            loc_trail = trail.copy()
-            loc_trail.add(candidate)
-
-            if candidate in walls or cheat_activated:
-                queue.append((candidate, time_elapsed+1, cheat_active_duration-1, True, cheat_used, loc_trail))
-            else:
-                queue.append((candidate, time_elapsed+1, cheat_active_duration, cheat_activated, cheat_used, loc_trail))
+                if candidate in walls or cheat_activated:
+                    queue.append((candidate, time_elapsed+1, cheat_active_duration-1, True, cheat_used, loc_trail))
+                else:
+                    queue.append((candidate, time_elapsed+1, cheat_active_duration, cheat_activated, cheat_used, loc_trail))
         
         candidate = (cur_x-1, cur_y)
-        if cur_x-1 >= 0 and candidate not in trail:
-
-            if candidate in walls and cheat_used:
-                continue
-
-            loc_trail = trail.copy()
-            loc_trail.add(candidate)
-        
-            if candidate in walls or cheat_activated:
-                queue.append((candidate, time_elapsed+1, cheat_active_duration-1, True, cheat_used, loc_trail))
-            else:
-                queue.append((candidate, time_elapsed+1, cheat_active_duration, cheat_activated, cheat_used, loc_trail))
+        if candidate not in walls or not cheat_used:
+            if cur_x-1 >= 0 and candidate not in trail:
+                loc_trail = trail.copy()
+                loc_trail.add(candidate)
+            
+                if candidate in walls or cheat_activated:
+                    queue.append((candidate, time_elapsed+1, cheat_active_duration-1, True, cheat_used, loc_trail))
+                else:
+                    queue.append((candidate, time_elapsed+1, cheat_active_duration, cheat_activated, cheat_used, loc_trail))
 
         candidate = (cur_x+1, cur_y)
-        if cur_x+1 < BOARD_WIDTH and candidate not in trail:
-            if candidate in walls and cheat_used:
-                continue
+        if candidate not in walls or not cheat_used:
+            if cur_x+1 < BOARD_WIDTH and candidate not in trail:
+                loc_trail = trail.copy()
+                loc_trail.add(candidate)
 
-            loc_trail = trail.copy()
-            loc_trail.add(candidate)
-
-            if candidate in walls or cheat_activated:
-                queue.append((candidate, time_elapsed+1, cheat_active_duration-1, True, cheat_used, loc_trail))
-            else:
-                queue.append((candidate, time_elapsed+1, cheat_active_duration, cheat_activated, cheat_used, loc_trail))
+                if candidate in walls or cheat_activated:
+                    queue.append((candidate, time_elapsed+1, cheat_active_duration-1, True, cheat_used, loc_trail))
+                else:
+                    queue.append((candidate, time_elapsed+1, cheat_active_duration, cheat_activated, cheat_used, loc_trail))
 
 def part1():
     ctr = 0
@@ -140,6 +130,7 @@ def part1():
             ctr += 1
     
     return ctr
+
 
 def main():
     global START, END, BOARD_LENGTH, BOARD_WIDTH
