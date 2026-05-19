@@ -6,12 +6,12 @@ BOARD_LENGTH = 0
 BOARD_WIDTH = 0
 
 walls = []
-cheats = []
+cheats = {}
 
+path = {}
+
+"""
 def trace():
-    """
-    Trace the default path.
-    """
     cur = START
     visited = {START}
     time_elapsed = 0
@@ -50,9 +50,6 @@ def trace():
     return time_elapsed
 
 def traverse():
-    """
-    Solve the race, with cheats.
-    """
     queue = [(START, 0, 2, False, False, {START})] # cur_pos, time_elapsed, cheat_active_duration, cheat_activated, cheat_used, trail
                                    # we separate cheat_active_duration and cheat-used
                                    # cheat of 2 picoseconds means A -> W -> B is allowed
@@ -130,8 +127,71 @@ def part1():
             ctr += 1
     
     return ctr
+"""
+
+def trace_with_time():
+    """
+    Trace the default path, keeping a timestamp of the time.
+    """
+    cur = START
+    visited = {START}
+    time_elapsed = 0
+
+    path[START] = 0
+
+    while cur != END:
+
+        cur_x, cur_y = cur
+
+        candidate = (cur_x, cur_y-1)
+        if cur_y-1 >= 0 and candidate not in visited and candidate not in walls:
+            visited.add(candidate)
+            cur = candidate # There's only one path, so greedily take the next unvisited path
+            time_elapsed += 1
+            path[candidate] = time_elapsed
+            continue
+        
+        candidate = (cur_x, cur_y+1)
+        if cur_y+1 < BOARD_LENGTH and candidate not in visited and candidate not in walls:
+            visited.add(candidate)
+            cur = candidate
+            time_elapsed += 1
+            path[candidate] = time_elapsed
+            continue
+
+        candidate = (cur_x-1, cur_y)
+        if cur_x-1 >= 0 and candidate not in visited and candidate not in walls:
+            visited.add(candidate)
+            cur = candidate
+            time_elapsed += 1
+            path[candidate] = time_elapsed
+            continue
+        
+        candidate = (cur_x+1, cur_y)
+        if cur_x+1 < BOARD_WIDTH and candidate not in visited and candidate not in walls:
+            visited.add(candidate)
+            cur = candidate
+            time_elapsed += 1
+            path[candidate] = time_elapsed
+            continue
 
 
+def findCheats():
+    for p,elapsed in path.items():
+        cur_x, cur_y = p
+        candidates = [(cur_x, cur_y-2), (cur_x, cur_y+2), (cur_x-2, cur_y), (cur_x+2, cur_y)]
+        for c in candidates:
+            if c in path:
+                time_saved = path[c] - (elapsed + 2)
+                cheats[(p, c)] = time_saved
+
+def filterCheats():
+    ctr = 0
+    for cheat, time_saved in cheats.items():
+        if time_saved >= 100:
+            ctr += 1
+    return ctr
+    
 def main():
     global START, END, BOARD_LENGTH, BOARD_WIDTH
 
@@ -154,8 +214,9 @@ def main():
 
             BOARD_LENGTH += 1
 
-    print(part1())
-
+    trace_with_time()
+    findCheats()
+    print(filterCheats()) # Part 1: 1355
 
 if __name__ == "__main__":
     main()
