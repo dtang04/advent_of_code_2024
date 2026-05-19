@@ -60,6 +60,9 @@ def trace_with_time():
             continue
 
 def findCheats():
+    """
+    Finds cheats of 2 ps (manhattan distance of 2)
+    """
     for p,elapsed in path.items():
         cur_x, cur_y = p
         candidates = [(cur_x, cur_y-2), (cur_x, cur_y+2), (cur_x-2, cur_y), (cur_x+2, cur_y)]
@@ -69,6 +72,9 @@ def findCheats():
                 cheats[(p, c)] = time_saved
 
 def findCheats_20ps():
+    """
+    Finds cheats <= 20 ps (manhattan distance of <= 20)
+    """
     for p1,elapsed_1 in path.items():
         for p2,elapsed_2 in path.items():
             if p1 == p2:
@@ -121,8 +127,6 @@ def main():
     print(filterCheats()) # Part 1: 1355
     findCheats_20ps()
     print(filterCheats_p2()) # Part 2: 1007335
-
-
 
 if __name__ == "__main__":
     main()
